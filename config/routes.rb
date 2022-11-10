@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  post 'user_token' => 'user_token#create'
+  root "cards#index"
+  resources :cards, only: [:index, :show, :create]
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :users, param: :_username
+  post '/auth/login', to: 'authentication#login'
+  get '/*a', to: 'application#not_found'
+
 end
