@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
     before_action :set_card, only: [:show, :edit, :update, :destroy]
     def index
-        @cards = Card.order(id: :asc)
+        @cards = Card.all
         render json: @cards
     end
 
@@ -54,6 +54,6 @@ class CardsController < ApplicationController
         @card = Card.find(params[:id])
     end
     def card_params
-        params.permit(:word, :definition, :gender, :sentence, :user_id)
+        params.require(:card).permit(:word, :definition, :gender, :sentence, :user_id)
     end
 end

@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
     before_action :authenticate_user, except: [ :create ]
+    skip_before_action :authenticate_user, only: [:create]
+
     def index
         @users = User.all
         render json: @users, status: :ok
@@ -9,11 +11,12 @@ class UsersController < ApplicationController
     end
     def create
         @user = User.new(user_params)
-        if @user.save
-            render json: @user, status: 201
-        else
+        @user.save
+        if @user.errors.any?
             render json: { errors: @user.errors.full_messages }, 
             status: :unprocessable_entity
+        else
+            render json: @user, status: 201
         end
     end
     def update
